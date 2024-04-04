@@ -43,9 +43,9 @@ def initialize_assets():
     files = os.listdir(folder_path)
 
     for file in files:
-        print("hi")
+        print("loading")
         loaded_assets.append(file)
-        print(loaded_assets)
+    print(loaded_assets)    
 
 
     
