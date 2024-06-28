@@ -1,5 +1,5 @@
 from time import sleep
 
 print("hi")
-sleep("10")
+sleep(10)
 quit()
