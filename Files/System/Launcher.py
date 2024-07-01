@@ -6,7 +6,6 @@ import subprocess
 
 ScriptFolder = os.path.dirname(os.path.abspath(__file__))
 UpdaterUrl = "https://raw.githubusercontent.com/harismastergamer/Amazing_Hacking_Tools_Project/main/Files/System/Updater.py"
-UpdaterUrlHeaders = {'Authorization': 'token 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'}
 
 
 def WantToLeave():
@@ -43,7 +42,7 @@ if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py")
 
     if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/"):
         os.makedirs(ScriptFolder + "/Amazing_Hacking_Tools/System/")
-    response = requests.get(UpdaterUrl, headers=UpdaterUrlHeaders)
+    response = requests.get(UpdaterUrl)
     if response.status_code == 200:
         with open(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py", "wb") as updater_file:
             updater_file.write(response.content)
