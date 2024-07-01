@@ -10,7 +10,6 @@ import getpass
 global InstallLoc
 global installscript_url
 installscript_url = "https://raw.githubusercontent.com/harismastergamer/Amazing_Hacking_Tools_Project/main/Files/System/Launcher.py"
-headers = {'Authorization': 'token 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'}
 username = getpass.getuser()
 #defs
 InstallLoc = ""
@@ -103,7 +102,7 @@ def StartInstall():
     statuslabel.config(text="Downloading: Install Script")
     InstallerWin.update()
     print("downloading")
-    response = requests.get(installscript_url, headers=headers)
+    response = requests.get(installscript_url)
     if response.status_code == 200:
         with open(InstallLoc + "/Amazing_Hacking_Tools/Launcher.py", "wb") as Install_Script_File:
             Install_Script_File.write(response.content)
