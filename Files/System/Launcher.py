@@ -1,7 +1,12 @@
 import tkinter as tk
+import os
+import requests 
+from time import sleep
+import subprocess
 
-
-
+ScriptFolder = os.path.dirname(os.path.abspath(__file__))
+UpdaterUrl = "https://raw.githubusercontent.com/harismastergamer/Amazing_Hacking_Tools_Project/main/Files/System/Updater.py"
+UpdaterUrlHeaders = {'Authorization': 'token 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'}
 
 
 def WantToLeave():
@@ -28,8 +33,34 @@ UpdateWin.protocol("WM_DELETE_WINDOW", WantToLeave)
 
 
 statuslabel = tk.Label(UpdateWin, text="Loading...", font=("Arial", 15))
-
 statuslabel.place(relx=0.5, rely=0.2, anchor='center')
 
+
+
+
+if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py"):
+    statuslabel.config(text="Missing File - Updater.py\nDownloading...")
+
+    if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/"):
+        os.makedirs(ScriptFolder + "/Amazing_Hacking_Tools/System/")
+    response = requests.get(UpdaterUrl, headers=UpdaterUrlHeaders)
+    if response.status_code == 200:
+        with open(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py", "wb") as updater_file:
+            updater_file.write(response.content)
+    else:
+        statuslabel.config(text="Error Downloading Updater.py, \nPlease Check Your Internet Connection\nAnd Try Again\nExiting in 10 S...")
+        print("error downloading script, status_code: ", response.status_code)
+        sleep(10)
+        quit()
+    statuslabel.config(text="Download Complete - Updater.py")
+
+
+statuslabel.config(text="Checking For Updates...")
+UpdateWin.destroy()
+try:
+    WantToLeaveWin.destroy()
+except:
+    pass
+subprocess.run(["python", ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py"], creationflags=subprocess.CREATE_NEW_CONSOLE)
 
 UpdateWin.mainloop()
