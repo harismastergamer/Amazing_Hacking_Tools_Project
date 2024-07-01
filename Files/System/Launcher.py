@@ -37,14 +37,14 @@ statuslabel.place(relx=0.5, rely=0.2, anchor='center')
 
 
 
-if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py"):
+if not os.path.exists(ScriptFolder + "/System/Updater.py"):
     statuslabel.config(text="Missing File - Updater.py\nDownloading...")
 
-    if not os.path.exists(ScriptFolder + "/Amazing_Hacking_Tools/System/"):
-        os.makedirs(ScriptFolder + "/Amazing_Hacking_Tools/System/")
+    if not os.path.exists(ScriptFolder + "/System/"):
+        os.makedirs(ScriptFolder + "/System/")
     response = requests.get(UpdaterUrl)
     if response.status_code == 200:
-        with open(ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py", "wb") as updater_file:
+        with open(ScriptFolder + "/System/Updater.py", "wb") as updater_file:
             updater_file.write(response.content)
     else:
         statuslabel.config(text="Error Downloading Updater.py, \nPlease Check Your Internet Connection\nAnd Try Again\nExiting in 10 S...")
@@ -60,6 +60,6 @@ try:
     WantToLeaveWin.destroy()
 except:
     pass
-subprocess.run(["python", ScriptFolder + "/Amazing_Hacking_Tools/System/Updater.py"], creationflags=subprocess.CREATE_NEW_CONSOLE)
+subprocess.run(["python", ScriptFolder + "/System/Updater.py"], creationflags=subprocess.CREATE_NEW_CONSOLE)
 
 UpdateWin.mainloop()
