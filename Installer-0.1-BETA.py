@@ -1,7 +1,17 @@
 import tkinter as tk
 from tkinter import filedialog
 import subprocess
+import os
+import requests
+from time import sleep
+from shutil import rmtree
+import pyshortcuts
+import getpass
 global InstallLoc
+global installscript_url
+installscript_url = "https://raw.githubusercontent.com/harismastergamer/Amazing_Hacking_Tools_Project/main/Files/System/Launcher.py"
+headers = {'Authorization': 'token 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'}
+username = getpass.getuser()
 #defs
 InstallLoc = ""
 
@@ -38,6 +48,15 @@ def ThirdPage():
     areyousurelabel.place(x=125, y=100)
     yesbutton.place(x=435, y=365)
     nobutton.place(x=50, y=365)
+    print(InstallLoc)
+
+def install_status_page():
+    areyousurelabel.destroy()
+    yesbutton.destroy()
+    nobutton.destroy()
+
+    statuslabel.place(x=125, y=100)
+    
 
 
 def InstallLocCannonBeBlackError():
@@ -52,23 +71,62 @@ def InstallLocCannonBeBlackError():
 
 
 def ChooseFolder():
+    global InstallLoc  # Add this line to access the global variable
     InstallLoc = filedialog.askdirectory()
-    if not InstallLoc == "":
+    if InstallLoc and os.path.exists(InstallLoc):
         ThirdPage()
     else:
         InstallLocCannonBeBlackError()
 
-
-
 def gotopage3():
+    global InstallLoc  # Add this line to access the global variable
     InstallLoc = installlocationtextbox.get()
-    if not InstallLoc == "":
+    if InstallLoc and os.path.exists(InstallLoc):
         ThirdPage()
     else:
         InstallLocCannonBeBlackError()
 
 def StartInstall():
-    print("starting install")
+    install_status_page()
+    InstallerWin.update()
+    
+    statuslabel.config(text="Creating Folders...")
+    InstallerWin.update()
+    if os.path.exists(InstallLoc + "/Amazing_Hacking_Tools"):
+        rmtree(InstallLoc + "/Amazing_Hacking_Tools")
+    
+    
+    print("creating folders")
+    if not os.path.exists(InstallLoc + "/Amazing_Hacking_Tools/System/"):
+        os.makedirs(InstallLoc + "/Amazing_Hacking_Tools/System/")
+
+    statuslabel.config(text="Downloading: Install Script")
+    InstallerWin.update()
+    print("downloading")
+    response = requests.get(installscript_url, headers=headers)
+    if response.status_code == 200:
+        with open(InstallLoc + "/Amazing_Hacking_Tools/Launcher.py", "wb") as Install_Script_File:
+            Install_Script_File.write(response.content)
+            statuslabel.config(text="Downloading: Install Script, OK")
+            InstallerWin.update()
+            
+    else:
+        statuslabel.config(text="Error Downloading Launcher, \nPlease Check Your Internet Connection\nAnd Try Again\nExiting in 10 S...")
+        sleep(5)
+        print("error downloading script, status_code: ", response.status_code)
+        sleep(10)
+        Abadon()
+    statuslabel.config(text="Launching Amazing Hacking Tools...")
+    InstallerWin.update()
+    sleep(1)
+
+
+    subprocess.Popen(["python", InstallLoc + "/Amazing_Hacking_Tools/Launcher.py"], creationflags=subprocess.CREATE_NEW_CONSOLE)
+    sleep(0.5)
+    quit()
+    
+        
+        
 
 
 def Abadon():
@@ -77,11 +135,6 @@ def Abadon():
     
     
     
-
-
-
-
-
 
 
 #setting up the installer window*******************************************************************************
@@ -112,8 +165,9 @@ okbutton = tk.Button(InstallerWin, text="Ok", font=("Arial", 12), padx=15, comma
 yesbutton = tk.Button(InstallerWin, text="Yes", font=("Arial", 12), command=StartInstall)
 nobutton = tk.Button(InstallerWin, text="No", font=("Arial", 12), command=Abadon)
 
-areyousurelabel = tk.Label(InstallerWin, text="Start the installation?")
+statuslabel = tk.Label(InstallerWin, text="", font=("Arial", 12))
 
+areyousurelabel = tk.Label(InstallerWin, text="Start the installation?")
 
 
 
