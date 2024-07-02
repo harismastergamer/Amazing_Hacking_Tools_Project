@@ -68,7 +68,7 @@ try:
 except:
     pass
 
-if os.path.exists(ScriptFolder + "/System/InstallLoc.txt"):
+if not os.path.exists(ScriptFolder + "/System/InstallLoc.txt"):
     with open(ScriptFolder + "/System/ScriptFolderLoc.txt", "wb") as ScriptFolderFile:
         ScriptFolderFile.write(ScriptFolder)
         ScriptFolderFile.close()
